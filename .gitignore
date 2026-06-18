@@ -1,0 +1,23 @@
+# Secrets et configuration locale
+scripts/.env.local
+*.env
+*.env.*
+
+# Rapports générés (contiennent potentiellement des données sensibles)
+reports/*.pdf
+reports/*.json
+
+# Python
+__pycache__/
+*.py[cod]
+scripts/venv/
+.venv/
+
+# Système
+.DS_Store
+Thumbs.db
+*.log
+
+# Node (si build local)
+node_modules/
+dist/

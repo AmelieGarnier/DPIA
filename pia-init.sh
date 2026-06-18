@@ -4,6 +4,13 @@
 
 set -e
 
+# ---------------------------------------------------------------------------
+# 0. Installer les dépendances système manquantes dans l'image Alpine
+# ---------------------------------------------------------------------------
+echo "[pia-init] Installation des dépendances système (git, python3, make, g++) ..."
+apk add --no-cache git python3 make g++
+echo "[pia-init] Dépendances installées."
+
 PIA_DIR="/app/pia"
 PIA_REPO="https://github.com/LINCnil/pia.git"
 

@@ -3,10 +3,12 @@
 ![RGPD](https://img.shields.io/badge/RGPD-(UE)%202016%2F679-7c3aed?style=flat-square&logo=eu&logoColor=white)
 ![Art.35](https://img.shields.io/badge/Art.%2035-DPIA%20Obligatoire-ef4444?style=flat-square)
 ![Art.33](https://img.shields.io/badge/Art.%2033-Notification%2072h-f59e0b?style=flat-square)
-![Art.32](https://img.shields.io/badge/Art.%2032-Sécurité%20du%20Traitement-00d4ff?style=flat-square)
+![Art.32](https://img.shields.io/badge/Art.%2032-S%C3%A9curit%C3%A9%20du%20Traitement-00d4ff?style=flat-square)
 ![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose%20v2-2496ed?style=flat-square&logo=docker&logoColor=white)
 ![ISO27005](https://img.shields.io/badge/ISO%2027005-MONARC-00ff88?style=flat-square)
+
+### 🔗 [Voir la page vitrine du projet](https://ameliegarnier.github.io/DPIA/portfolio/index.html)
 
 > **Cadre réglementaire :** RGPD (UE) 2016/679 — Articles 32, 33, 35  
 > **Outils déployés :** PIA CNIL · MONARC ISO 27005 · Wazuh · Suricata · Shuffle · TheHive

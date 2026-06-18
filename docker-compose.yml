@@ -1,0 +1,66 @@
+# ============================================================
+# DPIA Platform — docker-compose.yml
+# Repo : https://github.com/AmelieGarnier/DPIA
+#
+# Ce fichier gère uniquement PIA CNIL.
+# MONARC est déployé séparément via monarc-local (voir DEPLOYMENT.md).
+#
+# Port utilisé :
+#   PIA CNIL → http://<IP-VM-GRC>:8080
+#
+# Aucun conflit avec la stack SOC existante :
+#   Wazuh  : 1514 / 1515 / 55000
+#   TheHive: 9000 | Cortex: 9001 | Shuffle: 3001
+# ============================================================
+
+services:
+
+  # ────────────────────────────────────────────────────────────
+  # PIA CNIL — Outil officiel d'analyse d'impact RGPD (Art. 35)
+  # Source : https://github.com/LINCnil/pia
+  # Clonage + build Angular au 1er démarrage (~5 min).
+  # Les démarrages suivants réutilisent le build via le volume pia-app.
+  # ────────────────────────────────────────────────────────────
+  pia:
+    image: node:18-alpine
+    container_name: pia-cnil
+    working_dir: /app
+    volumes:
+      - pia-app:/app/pia                          # ← persiste clone + build entre redémarrages
+      - ./pia-init.sh:/docker-entrypoint.sh:ro    # ← script d'init (lecture seule)
+    entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PIA_PORT=8080
+    networks:
+      dpia-net:
+        ipv4_address: 172.30.0.10
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s    # laisse le temps au clone + build lors du 1er démarrage
+    labels:
+      - "project=dpia-portfolio"
+      - "tool=pia-cnil"
+      - "rgpd.article=35"
+
+# ──────────────────────────────────────────────────────────────
+# Réseau interne isolé (extensible si besoin)
+# ──────────────────────────────────────────────────────────────
+networks:
+  dpia-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+# ──────────────────────────────────────────────────────────────
+# Volume nommé : persiste /app/pia (clone git + build Angular)
+# ──────────────────────────────────────────────────────────────
+volumes:
+  pia-app:

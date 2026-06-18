@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plateforme DPIA — Portfolio GRC M2 ERIS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #111827;
+  --bg3: #1e2a3a;
+  --accent: #00d4ff;
+  --accent2: #00ff88;
+  --accent3: #7c3aed;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --border: #1e3a5f;
+  --card-bg: #0f1c2e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg2); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; transition: background 0.2s ease; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 64px;
+  background: rgba(10,14,26,0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease;
+}
+.navbar.scrolled { background: rgba(10,14,26,0.98); }
+
+.navbar-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; font-size: 1.1rem;
+  color: var(--accent); text-decoration: none;
+  letter-spacing: 0.05em; white-space: nowrap;
+}
+.navbar-logo span { color: var(--accent2); }
+
+.navbar-nav {
+  display: flex; align-items: center; gap: 1.75rem; list-style: none;
+}
+.navbar-nav a {
+  color: var(--muted); text-decoration: none;
+  font-size: 0.875rem; font-weight: 600; letter-spacing: 0.03em;
+  transition: color 0.2s ease; white-space: nowrap;
+}
+.navbar-nav a:hover, .navbar-nav a.active { color: var(--accent); }
+
+.navbar-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; background: none; border: none; padding: 4px;
+}
+.navbar-hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--text); border-radius: 2px; transition: background 0.2s ease;
+}
+.navbar-hamburger:hover span { background: var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 6rem 2rem 4rem;
+  background: linear-gradient(135deg, var(--bg) 0%, #0d1b2e 40%, #0a1628 70%, var(--bg) 100%);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background:
+    radial-gradient(ellipse at 60% 40%, rgba(0,212,255,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 70%, rgba(124,58,237,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.4;
+}
+.hero-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--accent2);
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.25);
+  border-radius: 20px; padding: 0.35rem 1rem;
+  margin-bottom: 1.5rem; letter-spacing: 0.08em;
+  animation: fadeInDown 0.6s ease both;
+}
+.hero h1 {
+  font-size: clamp(2rem,5vw,3.75rem); font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.25rem; animation: fadeInDown 0.7s ease 0.1s both;
+}
+.hero h1 .highlight {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-subtitle {
+  font-size: clamp(1rem,2vw,1.25rem); color: var(--muted);
+  max-width: 640px; margin: 0 auto 1.5rem; font-weight: 300;
+  animation: fadeInDown 0.7s ease 0.2s both;
+}
+.typing-wrapper {
+  margin-bottom: 1.5rem; min-height: 2rem;
+  animation: fadeInDown 0.7s ease 0.25s both;
+}
+.typing-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.9rem,2vw,1.1rem); color: var(--accent2);
+}
+.cursor {
+  display: inline-block; width: 2px; height: 1.1em;
+  background: var(--accent); margin-left: 2px;
+  vertical-align: middle; border-radius: 1px;
+  animation: blink 1s step-end infinite;
+}
+.hero-stats {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 2rem;
+  animation: fadeInDown 0.7s ease 0.3s both;
+}
+.stat-box {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.75rem 1.25rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em;
+}
+.stat-value {
+  font-size: 0.85rem; font-weight: 700; color: var(--accent);
+}
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeInDown 0.7s ease 0.35s both;
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--accent); color: var(--bg);
+  font-weight: 700; font-size: 0.9rem; text-decoration: none;
+  border-radius: 8px; border: none; cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover {
+  background: #00b8e0; transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,212,255,0.35);
+}
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: transparent; color: var(--text);
+  font-weight: 600; font-size: 0.9rem; text-decoration: none;
+  border-radius: 8px; border: 1px solid var(--border); cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+/* ── SECTIONS ── */
+.section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+.section-full { padding: 5rem 2rem; width: 100%; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-title {
+  font-size: clamp(1.5rem,3vw,2.25rem); font-weight: 700;
+  margin-bottom: 0.75rem; position: relative;
+  display: inline-block; padding-bottom: 0.6rem;
+}
+.section-title::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 50px; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 2px;
+}
+.section-subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 2.5rem; max-width: 600px; }
+
+/* ── ARCHITECTURE BOX ── */
+.architecture-box {
+  border: 1px solid var(--border); border-radius: 16px;
+  background: var(--card-bg); padding: 2.5rem;
+  position: relative; overflow: hidden;
+  animation: pulse-border 4s ease-in-out infinite;
+}
+.architecture-box-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--accent);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.architecture-box-header::before {
+  content: ''; display: inline-block; width: 8px; height: 8px;
+  background: var(--accent2); border-radius: 50%; box-shadow: 0 0 6px var(--accent2);
+}
+.arch-svg-wrapper { display: flex; justify-content: center; align-items: center; max-width: 700px; margin: 0 auto; }
+.arch-svg-wrapper svg { width: 100%; height: auto; }
+
+/* ── CARDS ── */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap: 1.5rem; margin-top: 2rem;
+}
+.card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.75rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  opacity: 0; transition: opacity 0.25s ease;
+}
+.card:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(0,212,255,0.18), 0 4px 16px rgba(0,0,0,0.4); border-color: rgba(0,212,255,0.35); }
+.card:hover::before { opacity: 1; }
+.card-icon { font-size: 2.25rem; line-height: 1; display: block; margin-bottom: 0.25rem; }
+.card-title { font-size: 1.05rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+.card-description { font-size: 0.875rem; color: var(--muted); line-height: 1.6; flex: 1; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+.card-tag {
+  display: inline-block; font-size: 0.7rem; font-weight: 600;
+  padding: 0.2rem 0.6rem; border-radius: 20px;
+  background: rgba(0,212,255,0.1); color: var(--accent);
+  border: 1px solid rgba(0,212,255,0.25);
+  letter-spacing: 0.03em; white-space: nowrap;
+}
+.card-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 0.5rem; padding: 0.55rem 1.1rem;
+  font-size: 0.8rem; font-weight: 700; color: var(--accent);
+  background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 6px; text-decoration: none; align-self: flex-start;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.card-link:hover { background: rgba(0,212,255,0.15); border-color: var(--accent); color: #fff; transform: translateX(3px); }
+
+.card-risks { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.risk-pill {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  padding: 0.2rem 0.65rem; border-radius: 20px;
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+.pill-critical { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+.pill-warning  { background: rgba(245,158,11,0.12); color: var(--warning); border: 1px solid rgba(245,158,11,0.3); }
+.pill-neutral  { background: rgba(124,58,237,0.12); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+.card-tag.tag-green  { background: rgba(0,255,136,0.1); color: var(--accent2); border-color: rgba(0,255,136,0.25); }
+.card-tag.tag-orange { background: rgba(245,158,11,0.12); color: var(--warning); border-color: rgba(245,158,11,0.3); }
+.card-tag.tag-purple { background: rgba(124,58,237,0.12); color: #a78bfa; border-color: rgba(124,58,237,0.3); }
+
+/* ── DEMO TERMINAL BOXES ── */
+.demos-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-top: 2rem;
+}
+.demo-box {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.demo-header {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0.6rem 1rem;
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dot-red    { background: var(--danger); }
+.dot-yellow { background: var(--warning); }
+.dot-green  { background: var(--accent2); }
+.demo-title-bar { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-left: 4px; }
+.demo-content { padding: 1rem; position: relative; overflow: hidden; }
+.demo-pre {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  line-height: 1.65; white-space: pre; color: var(--text);
+}
+.cli-prompt  { color: var(--accent); }
+.cli-cmd     { color: var(--text); font-weight: 700; }
+.cli-value   { color: var(--accent2); }
+.cli-divider { color: var(--border); }
+.cli-ok      { color: var(--accent2); }
+.cli-arrow   { color: var(--accent); }
+.cli-active  { color: var(--warning); font-weight: 700; }
+.cli-circle  { color: var(--muted); }
+.cli-muted   { color: var(--muted); }
+.cli-warning { color: var(--warning); }
+.cli-high    { color: #f97316; }
+.cli-critical{ color: var(--danger); font-weight: 700; }
+.cli-field   { color: var(--muted); }
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.5; animation: scan-line 2.8s linear infinite;
+}
+
+/* ── RGPD CARDS ── */
+.rgpd-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1.5rem; margin-top: 2rem;
+}
+.rgpd-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 14px; padding: 2rem 1.75rem 1.75rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.rgpd-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent3), var(--accent));
+  opacity: 0; transition: opacity 0.25s ease;
+}
+.rgpd-card:hover { transform: translateY(-6px); box-shadow: 0 10px 36px rgba(124,58,237,0.2), 0 4px 16px rgba(0,0,0,0.3); border-color: rgba(124,58,237,0.4); }
+.rgpd-card:hover::after { opacity: 1; }
+.rgpd-card-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem; }
+.article-number {
+  font-family: 'JetBrains Mono', monospace; font-size: 3.5rem; font-weight: 700; line-height: 1;
+  background: linear-gradient(135deg, var(--accent3), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  flex-shrink: 0;
+}
+.article-info { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.4rem; }
+.article-info h3 { font-size: 1rem; font-weight: 700; color: var(--text); }
+.article-tag {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  padding: 0.2rem 0.65rem; border-radius: 20px;
+  background: rgba(0,212,255,0.1); color: var(--accent);
+  border: 1px solid rgba(0,212,255,0.25);
+}
+.article-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+.article-details { margin-top: 0.5rem; }
+.article-details h4 { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+.article-details ul { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+.article-details li {
+  font-size: 0.8rem; color: var(--muted);
+  padding-left: 1rem; position: relative;
+}
+.article-details li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+.article-footer { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 0.5rem; }
+
+/* ── PIPELINE ── */
+.pipeline-container {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 2rem; margin-top: 2rem;
+}
+.pipeline-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  color: var(--accent); margin-bottom: 1.5rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.pipeline-steps { display: flex; flex-direction: column; gap: 0; }
+.pipeline-step {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.pipeline-step:last-child { border-bottom: none; }
+.pipeline-icon { font-size: 1.5rem; flex-shrink: 0; width: 2.5rem; text-align: center; }
+.pipeline-content { flex: 1; }
+.pipeline-content h4 {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  font-weight: 700; color: var(--accent); margin-bottom: 0.25rem;
+}
+.pipeline-content p { font-size: 0.875rem; color: var(--muted); }
+.pipeline-arrow { color: var(--accent3); font-size: 1.2rem; align-self: center; }
+
+/* ── CODE SNIPPET ── */
+.code-snippet {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-top: 1.5rem;
+}
+.code-header {
+  display: flex; align-items: center; padding: 0.6rem 1rem;
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+}
+.code-lang {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted);
+}
+.code-body {
+  padding: 1.25rem; overflow-x: auto;
+}
+.code-body code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--accent2); line-height: 1.7;
+}
+
+/* ── RESOURCES ── */
+.resources-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 1rem; margin-top: 2rem;
+}
+.resource-link {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1rem 1.25rem; text-decoration: none;
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.resource-link:hover {
+  border-color: var(--accent); transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,212,255,0.15);
+}
+.resource-icon { font-size: 1.5rem; flex-shrink: 0; }
+.resource-label { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 3rem 2rem; text-align: center;
+}
+.footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.footer-logo { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--accent); }
+.footer-desc { color: var(--muted); font-size: 0.875rem; }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+.footer-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s ease; }
+.footer-links a:hover { color: var(--accent); }
+.footer-legal { color: var(--muted); font-size: 0.75rem; opacity: 0.6; line-height: 1.6; }
+
+/* ── FADE-IN ── */
+.fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── ANIMATIONS ── */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes scan-line { 0%{top:0;opacity:0.9} 50%{opacity:0.5} 100%{top:100%;opacity:0.9} }
+@keyframes pulse-border {
+  0%,100%{border-color:var(--border);box-shadow:0 0 0 0 rgba(0,212,255,0);}
+  50%{border-color:var(--accent);box-shadow:0 0 18px 2px rgba(0,212,255,0.18);}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px) {
+  .demos-grid, .rgpd-grid { grid-template-columns: 1fr; }
+}
+@media(max-width:768px) {
+  .navbar { padding: 0 1.25rem; }
+  .navbar-nav {
+    display: none; position: absolute; top: 64px; left: 0; right: 0;
+    flex-direction: column; gap: 0;
+    background: rgba(10,14,26,0.97); border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0;
+  }
+  .navbar-nav.open { display: flex; }
+  .navbar-nav a { display: block; padding: 0.75rem 1.5rem; font-size: 0.95rem; }
+  .navbar-hamburger { display: flex; }
+  .hero { padding: 5rem 1.25rem 3rem; }
+  .hero-actions { flex-direction: column; align-items: center; width: 100%; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
+  .section { padding: 3rem 1.25rem; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .architecture-box { padding: 1.5rem 1.25rem; }
+  .pipeline-container { padding: 1.25rem; }
+  .article-number { font-size: 2.5rem; }
+  .section-title { font-size: 1.5rem; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="#hero" class="navbar-logo">&gt; DPIA<span>_</span>Platform</a>
+    <ul class="navbar-nav">
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#cas-usage">Cas d’usage</a></li>
+      <li><a href="#demos">Interfaces</a></li>
+      <li><a href="#reglementaire">RGPD</a></li>
+      <li><a href="#technique">Technique</a></li>
+    </ul>
+    <button class="navbar-hamburger" aria-label="Menu" onclick="this.closest('nav').querySelector('.navbar-nav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-badge">Portfolio GRC &mdash; M2 ERIS</div>
+    <h1>Plateforme <span class="highlight">DPIA</span></h1>
+    <div class="typing-wrapper">
+      <span class="typing-text" id="typing-text"></span><span class="cursor"></span>
+    </div>
+    <p class="hero-subtitle">
+      Déploiement et documentation d’une plateforme d’analyse d’impact (AIPD) conforme RGPD,
+      intégrée à une stack SOC/SIEM complète.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <span class="stat-label">Art. 35 RGPD</span>
+        <span class="stat-value">DPIA Obligatoire</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">72h</span>
+        <span class="stat-value">Notification CNIL</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">3 Cas d’usage</span>
+        <span class="stat-value">Documentés</span>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#architecture" class="btn-primary">Voir l’architecture</a>
+      <a href="#cas-usage" class="btn-secondary">Accéder aux cas d’usage</a>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section class="section fade-in" id="architecture">
+    <h2 class="section-title">Architecture de la Chaîne DPIA</h2>
+    <p class="section-subtitle">Intégration complète entre les outils de conformité RGPD et la stack SIEM/SOC</p>
+    <div class="architecture-box">
+      <div class="architecture-box-header">Diagramme d’architecture — Vue d’ensemble</div>
+      <div class="arch-svg-wrapper">
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" aria-label="Diagramme architecture DPIA">
+          <defs>
+            <marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#00d4ff"/>
+            </marker>
+            <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+            </marker>
+          </defs>
+          <rect width="800" height="400" fill="#0a0e1a" rx="12"/>
+          <!-- Top layer -->
+          <rect x="20" y="40" width="760" height="160" fill="#0f172a" rx="8" stroke="#1e2a3a" stroke-width="1"/>
+          <text x="400" y="58" text-anchor="middle" fill="#64748b" font-size="11" font-family="monospace" letter-spacing="2">COUCHE CONFORMITÉ RGPD</text>
+          <!-- PIA CNIL -->
+          <rect x="30" y="70" width="130" height="70" fill="#1e2a3a" stroke="#00d4ff" stroke-width="1.5" rx="6"/>
+          <text x="95" y="95" text-anchor="middle" fill="#00d4ff" font-size="13" font-family="monospace" font-weight="bold">PIA CNIL</text>
+          <text x="95" y="113" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="monospace">:8080</text>
+          <text x="95" y="128" text-anchor="middle" fill="#64748b" font-size="9" font-family="monospace">outil officiel CNIL</text>
+          <!-- MONARC -->
+          <rect x="640" y="70" width="140" height="70" fill="#1e2a3a" stroke="#00d4ff" stroke-width="1.5" rx="6"/>
+          <text x="710" y="95" text-anchor="middle" fill="#00d4ff" font-size="13" font-family="monospace" font-weight="bold">MONARC</text>
+          <text x="710" y="113" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="monospace">ISO 27005 :8888</text>
+          <text x="710" y="128" text-anchor="middle" fill="#64748b" font-size="9" font-family="monospace">analyse risques</text>
+          <!-- Bridge -->
+          <rect x="300" y="78" width="200" height="66" fill="#1e2a3a" stroke="#7c3aed" stroke-width="2" rx="6"/>
+          <text x="400" y="101" text-anchor="middle" fill="#a78bfa" font-size="11" font-family="monospace" font-weight="bold">wazuh_dpia_bridge.py</text>
+          <text x="400" y="119" text-anchor="middle" fill="#7c3aed" font-size="10" font-family="monospace">Art. 33 RGPD</text>
+          <text x="400" y="133" text-anchor="middle" fill="#64748b" font-size="9" font-family="monospace">orchestration &amp; notification</text>
+          <!-- Arrows top -->
+          <line x1="161" y1="105" x2="298" y2="105" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+          <line x1="501" y1="105" x2="638" y2="105" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+          <line x1="639" y1="118" x2="502" y2="118" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-cyan)" opacity="0.5"/>
+          <!-- Vertical arrow -->
+          <line x1="400" y1="188" x2="400" y2="248" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-purple)"/>
+          <text x="410" y="222" fill="#a78bfa" font-size="10" font-family="monospace">Détection violations</text>
+          <!-- Bottom layer -->
+          <rect x="20" y="258" width="760" height="125" fill="#0f172a" rx="8" stroke="#1e2a3a" stroke-width="1"/>
+          <text x="400" y="275" text-anchor="middle" fill="#64748b" font-size="11" font-family="monospace" letter-spacing="2">COUCHE DÉTECTION TECHNIQUE</text>
+          <!-- Wazuh -->
+          <rect x="35" y="283" width="145" height="60" fill="#1e2a3a" stroke="#00d4ff" stroke-width="1.5" rx="6"/>
+          <text x="107" y="305" text-anchor="middle" fill="#00d4ff" font-size="12" font-family="monospace" font-weight="bold">Wazuh/SIEM</text>
+          <text x="107" y="323" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">:55000</text>
+          <text x="107" y="335" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="monospace">corrélation événements</text>
+          <line x1="181" y1="313" x2="216" y2="313" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+          <!-- Suricata -->
+          <rect x="217" y="283" width="145" height="60" fill="#1e2a3a" stroke="#00d4ff" stroke-width="1.5" rx="6"/>
+          <text x="289" y="305" text-anchor="middle" fill="#00d4ff" font-size="12" font-family="monospace" font-weight="bold">Suricata/IDS</text>
+          <text x="289" y="323" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">(passif)</text>
+          <text x="289" y="335" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="monospace">détection intrusion</text>
+          <line x1="363" y1="313" x2="398" y2="313" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+          <!-- Shuffle -->
+          <rect x="399" y="283" width="145" height="60" fill="#1e2a3a" stroke="#00d4ff" stroke-width="1.5" rx="6"/>
+          <text x="471" y="305" text-anchor="middle" fill="#00d4ff" font-size="12" font-family="monospace" font-weight="bold">Shuffle/SOAR</text>
+          <text x="471" y="323" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">:3001</text>
+          <text x="471" y="335" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="monospace">automatisation réponse</text>
+          <line x1="545" y1="313" x2="580" y2="313" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+          <!-- TheHive -->
+          <rect x="581" y="283" width="180" height="60" fill="#1e2a3a" stroke="#7c3aed" stroke-width="1.5" rx="6"/>
+          <text x="671" y="305" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="monospace" font-weight="bold">TheHive/Cases</text>
+          <text x="671" y="323" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">:9000</text>
+          <text x="671" y="335" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="monospace">gestion incidents RGPD</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAS D'USAGE -->
+  <section class="section fade-in" id="cas-usage">
+    <h2 class="section-title">Cas d’Usage Documentés</h2>
+    <p class="section-subtitle">Analyses d’impact réalisées dans le cadre du déploiement de la plateforme DPIA</p>
+    <div class="cards-grid">
+
+      <div class="card">
+        <span class="card-icon">&#x1F4F9;</span>
+        <span class="card-tag tag-green">DPIA Obligatoire</span>
+        <h3 class="card-title">Vidéosurveillance PME</h3>
+        <p class="card-description">
+          Analyse d’impact pour un système de vidéosurveillance couvrant 24 caméras IP avec module
+          d’analyse comportementale IA. Données biométriques potentielles.
+        </p>
+        <div class="card-risks">
+          <span class="risk-pill pill-critical">Risque CRITIQUE</span>
+          <span class="risk-pill pill-neutral">Art. 9 RGPD</span>
+        </div>
+        <a href="../cases/videosurveillance.md" class="card-link">Lire l’analyse &rarr;</a>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">&#x1F3E5;</span>
+        <span class="card-tag tag-orange">Art. 9 RGPD</span>
+        <h3 class="card-title">Gestion RH &mdash; Données de Santé</h3>
+        <p class="card-description">
+          DPIA pour un SIRH traitant arrêts maladie, RQTH et fiches d’aptitude de 350 salariés.
+          DPD obligatoire, hébergement HDS requis.
+        </p>
+        <div class="card-risks">
+          <span class="risk-pill pill-warning">8/9 critères</span>
+          <span class="risk-pill pill-neutral">DPD Requis</span>
+        </div>
+        <a href="../cases/rh-sante.md" class="card-link">Lire l’analyse &rarr;</a>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">&#x1F3DB;&#xFE0F;</span>
+        <span class="card-tag tag-purple">Autorité Publique</span>
+        <h3 class="card-title">SI Collectivité Territoriale</h3>
+        <p class="card-description">
+          Analyse complète du SI d’une commune de 45&nbsp;000 habitants&nbsp;: état civil, action sociale,
+          urbanisme, portail citoyen FranceConnect.
+        </p>
+        <div class="card-risks">
+          <span class="risk-pill pill-warning">9/9 critères</span>
+          <span class="risk-pill pill-critical">Risque CRITIQUE</span>
+        </div>
+        <a href="../cases/collectivite.md" class="card-link">Lire l’analyse &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DEMOS -->
+  <section class="section fade-in" id="demos">
+    <h2 class="section-title">Interfaces des Outils</h2>
+    <p class="section-subtitle">Aperçu des environnements déployés lors du projet</p>
+    <div class="demos-grid">
+
+      <div class="demo-box">
+        <div class="demo-header">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="demo-title-bar">Interface PIA CNIL &mdash; :8080</span>
+        </div>
+        <div class="demo-content">
+          <div class="scan-line" style="position:absolute"></div>
+          <pre class="demo-pre"><span class="cli-prompt">&gt;</span> <span class="cli-cmd">Nouvelle DPIA</span>
+<span class="cli-prompt">&gt;</span> <span class="cli-value">Vidéosurveillance PME</span>
+<span class="cli-divider">──────────────────────</span>
+<span class="cli-ok">✓</span> Contexte
+<span class="cli-ok">✓</span> Mesures existantes
+<span class="cli-arrow">→</span> <span class="cli-active">Risques (en cours)</span>
+<span class="cli-circle">○</span> Validation DPD</pre>
+        </div>
+      </div>
+
+      <div class="demo-box">
+        <div class="demo-header">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="demo-title-bar">MONARC &mdash; Matrice des Risques :8888</span>
+        </div>
+        <div class="demo-content">
+          <pre class="demo-pre"><span class="cli-muted">  Probabilité ────────────────&gt;</span>
+<span class="cli-muted">I </span><span class="cli-ok">FAIBLE  </span><span class="cli-warning">MODÉRÉ  </span><span class="cli-high">ÉLEVÉ   </span><span class="cli-critical">CRITIQUE</span>
+<span class="cli-muted">m ┌───────┬────────┬────────┬─────────┐</span>
+<span class="cli-muted">p </span><span class="cli-muted">│</span><span class="cli-ok">  vert </span><span class="cli-muted">│</span><span class="cli-warning"> orange </span><span class="cli-muted">│</span><span class="cli-high"> rouge  </span><span class="cli-muted">│</span><span class="cli-critical"> ROUGE  </span><span class="cli-muted">│</span>
+<span class="cli-muted">a </span><span class="cli-muted">│</span><span class="cli-ok"> CAM01 </span><span class="cli-muted">│</span><span class="cli-warning"> SIRH   </span><span class="cli-muted">│</span><span class="cli-high"> CAM24  </span><span class="cli-muted">│</span><span class="cli-critical"> FC_API </span><span class="cli-muted">│</span>
+<span class="cli-muted">c └───────┴────────┴────────┴─────────┘</span></pre>
+        </div>
+      </div>
+
+      <div class="demo-box">
+        <div class="demo-header">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="demo-title-bar">TheHive &mdash; Ticket RGPD Art.33</span>
+        </div>
+        <div class="demo-content">
+          <pre class="demo-pre"><span class="cli-field">CASE</span> <span class="cli-value">#2024-RGPD-001</span>
+<span class="cli-divider">─────────────────────</span>
+<span class="cli-field">Sévérité  :</span> <span class="cli-critical">CRITIQUE</span>
+<span class="cli-field">Tag       :</span> <span class="cli-warning">RGPD-Art33</span>
+<span class="cli-field">SLA       :</span> <span class="cli-active">71h 30m restantes</span>
+<span class="cli-field">Assigné   :</span> <span class="cli-ok">DPD + RSSI</span>
+<span class="cli-field">Status    :</span> <span class="cli-arrow">EN COURS</span>
+<span class="cli-divider">─────────────────────</span>
+<span class="cli-muted">[ Notifier CNIL ]  [ Clore ]</span></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RGPD -->
+  <section class="section fade-in" id="reglementaire">
+    <h2 class="section-title">Cadre Réglementaire RGPD</h2>
+    <p class="section-subtitle">Les trois piliers réglementaires de ce projet</p>
+    <div class="rgpd-grid">
+
+      <div class="rgpd-card">
+        <div class="rgpd-card-header">
+          <span class="article-number">35</span>
+          <div class="article-info">
+            <h3>Analyse d’Impact (AIPD)</h3>
+            <span class="article-tag">Obligatoire &mdash; Risque Élevé</span>
+          </div>
+        </div>
+        <p class="article-desc">Toute opération de traitement susceptible d’engendrer un risque élevé pour les droits et libertés des personnes physiques doit faire l’objet d’une analyse d’impact préalable.</p>
+        <div class="article-details">
+          <h4>Cas déclencheurs :</h4>
+          <ul>
+            <li>Surveillance systématique à grande échelle</li>
+            <li>Données sensibles (Art. 9 &amp; 10)</li>
+            <li>Évaluation/scoring automatisé</li>
+            <li>Décisions automatisées</li>
+          </ul>
+        </div>
+        <p class="article-footer">La CNIL publie une liste des traitements nécessitant obligatoirement une DPIA.</p>
+      </div>
+
+      <div class="rgpd-card">
+        <div class="rgpd-card-header">
+          <span class="article-number">33</span>
+          <div class="article-info">
+            <h3>Notification des Violations</h3>
+            <span class="article-tag">72 heures &mdash; CNIL</span>
+          </div>
+        </div>
+        <p class="article-desc">En cas de violation de données à caractère personnel, le responsable du traitement doit notifier l’autorité de contrôle dans les 72 heures après en avoir pris connaissance.</p>
+        <div class="article-details">
+          <h4>Couverture par notre stack :</h4>
+          <ul>
+            <li>Wazuh détecte l’incident (niveau &ge;12)</li>
+            <li>Script calcule le délai restant automatiquement</li>
+            <li>TheHive crée un ticket avec SLA 72h</li>
+            <li>Rapport PDF généré pour le DPO</li>
+          </ul>
+        </div>
+        <p class="article-footer">Si la violation est susceptible d’engendrer un risque élevé, les personnes concernées doivent également être informées (Art. 34).</p>
+      </div>
+
+      <div class="rgpd-card">
+        <div class="rgpd-card-header">
+          <span class="article-number">32</span>
+          <div class="article-info">
+            <h3>Sécurité du Traitement</h3>
+            <span class="article-tag">Mesures Techniques &amp; Org.</span>
+          </div>
+        </div>
+        <p class="article-desc">Mise en œuvre de mesures techniques et organisationnelles appropriées afin de garantir un niveau de sécurité adapté au risque : chiffrement, pseudonymisation, disponibilité, résilience.</p>
+        <div class="article-details">
+          <h4>Mesures mises en place :</h4>
+          <ul>
+            <li>Chiffrement AES-256 des données au repos</li>
+            <li>Wazuh EDR &mdash; surveillance temps réel</li>
+            <li>Suricata IDS &mdash; détection intrusions réseau</li>
+            <li>MFA sur tous les systèmes sensibles</li>
+            <li>Journalisation complète des accès</li>
+          </ul>
+        </div>
+        <p class="article-footer">Tests réguliers d’efficacité des mesures (Art. 32(1)(d)) — intégrés dans les playbooks Shuffle.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TECHNIQUE -->
+  <section class="section fade-in" id="technique">
+    <h2 class="section-title">Lien Technique : Wazuh &rarr; Notification CNIL</h2>
+    <p class="section-subtitle">Comment la stack SIEM alimente la détection des violations de données personnelles (Art. 33 RGPD)</p>
+    <div class="pipeline-container">
+      <div class="pipeline-title">&gt; Pipeline de détection des violations</div>
+      <div class="pipeline-steps">
+
+        <div class="pipeline-step fade-in">
+          <div class="pipeline-icon">🔍</div>
+          <div class="pipeline-content">
+            <h4>Wazuh SIEM</h4>
+            <p>Alerte niveau &ge;12 déclenchée (accès BDD, exfiltration, brute-force, ransomware)</p>
+          </div>
+          <div class="pipeline-arrow">&rarr;</div>
+        </div>
+
+        <div class="pipeline-step fade-in">
+          <div class="pipeline-icon">🐍</div>
+          <div class="pipeline-content">
+            <h4>wazuh_dpia_bridge.py</h4>
+            <p>Filtrage RGPD, évaluation ‘violation&nbsp;: oui/probable/non’, calcul délai 72h</p>
+          </div>
+          <div class="pipeline-arrow">&rarr;</div>
+        </div>
+
+        <div class="pipeline-step fade-in">
+          <div class="pipeline-icon">📊</div>
+          <div class="pipeline-content">
+            <h4>Rapport JSON/PDF</h4>
+            <p>Rapport structuré généré, lisible par le DPO non-technique</p>
+          </div>
+          <div class="pipeline-arrow">&rarr;</div>
+        </div>
+
+        <div class="pipeline-step fade-in">
+          <div class="pipeline-icon">⚡</div>
+          <div class="pipeline-content">
+            <h4>Shuffle SOAR</h4>
+            <p>Playbook déclenché : isolation, enrichissement IOC, notification DPD</p>
+          </div>
+          <div class="pipeline-arrow">&rarr;</div>
+        </div>
+
+        <div class="pipeline-step fade-in">
+          <div class="pipeline-icon">🎫</div>
+          <div class="pipeline-content">
+            <h4>TheHive</h4>
+            <p>Ticket créé avec SLA 72h, tags RGPD-Art33, assigné DPO + RSSI</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="code-snippet">
+        <div class="code-header">
+          <span class="code-lang">JSON &mdash; Exemple de sortie wazuh_dpia_bridge.py</span>
+        </div>
+        <div class="code-body"><code>{
+  "evaluation_rgpd": {
+    "violation_donnees_personnelles": "oui",
+    "categorie_donnees": "Exfiltration données personnelles",
+    "articles_concernes": ["Art. 33", "Art. 34"]
+  },
+  "delai_notification_cnil": {
+    "heures_restantes": 68.5,
+    "statut": "EN COURS",
+    "action_requise": "Préparer la notification CNIL"
+  }
+}</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESSOURCES -->
+  <section class="section fade-in" id="ressources">
+    <h2 class="section-title">Rapports &amp; Documentation</h2>
+    <div class="resources-grid">
+      <a href="../cases/videosurveillance.md" class="resource-link">
+        <span class="resource-icon">📄</span>
+        <span class="resource-label">DPIA Vidéosurveillance</span>
+      </a>
+      <a href="../cases/rh-sante.md" class="resource-link">
+        <span class="resource-icon">📄</span>
+        <span class="resource-label">DPIA RH &amp; Santé</span>
+      </a>
+      <a href="../cases/collectivite.md" class="resource-link">
+        <span class="resource-icon">📄</span>
+        <span class="resource-label">DPIA Collectivité</span>
+      </a>
+      <a href="../scripts/wazuh_dpia_bridge.py" class="resource-link">
+        <span class="resource-icon">🐍</span>
+        <span class="resource-label">Script Wazuh-DPIA</span>
+      </a>
+      <a href="../docker-compose.yml" class="resource-link">
+        <span class="resource-icon">🐳</span>
+        <span class="resource-label">Docker Compose</span>
+      </a>
+      <a href="../README.md" class="resource-link">
+        <span class="resource-icon">📖</span>
+        <span class="resource-label">README</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p class="footer-logo">&gt; DPIA_Platform</p>
+      <p class="footer-desc">Portfolio GRC &mdash; M2 Expert Réseaux et Infrastructures Sécurisées</p>
+      <div class="footer-links">
+        <a href="https://www.cnil.fr/fr/les-analyses-dimpact-relatives-la-protection-des-donnees-aipd" target="_blank" rel="noopener">CNIL &mdash; Guide DPIA</a>
+        <a href="https://github.com/LINCnil/pia" target="_blank" rel="noopener">PIA CNIL GitHub</a>
+        <a href="https://github.com/monarc-project" target="_blank" rel="noopener">MONARC GitHub</a>
+      </div>
+      <p class="footer-legal">
+        Document pédagogique &mdash; Portfolio M2 ERIS &mdash; Juin 2026<br>
+        Les analyses documentées sont des exemples structurés et ne constituent pas des avis juridiques opposables.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+
+    /* Typing animation */
+    var strings = [
+      "Conformité RGPD • Articles 32, 33, 35",
+      "DPIA • Analyse d’Impact sur la Protection des Données",
+      "Wazuh + Suricata + Shuffle + TheHive",
+      "Notification CNIL sous 72h — Automatisée"
+    ];
+    var el = document.getElementById("typing-text");
+    var idx = 0, charIdx = 0, deleting = false;
+
+    function typeStep() {
+      if (!el) return;
+      var s = strings[idx];
+      charIdx = deleting ? charIdx - 1 : charIdx + 1;
+      el.textContent = s.substring(0, charIdx);
+      if (!deleting && charIdx === s.length) {
+        setTimeout(function(){ deleting = true; typeStep(); }, 2000); return;
+      }
+      if (deleting && charIdx === 0) {
+        deleting = false; idx = (idx + 1) % strings.length;
+        setTimeout(typeStep, 300); return;
+      }
+      setTimeout(typeStep, deleting ? 40 : 70);
+    }
+    typeStep();
+
+    /* Fade-in on scroll */
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll(".fade-in").forEach(function(el) { observer.observe(el); });
+
+    /* Navbar scroll */
+    var navbar = document.querySelector(".navbar");
+    function onScroll() {
+      if (!navbar) return;
+      navbar.classList.toggle("scrolled", window.scrollY > 50);
+      /* Active link */
+      var pos = window.scrollY + 120;
+      var cur = "";
+      document.querySelectorAll("section[id]").forEach(function(s) {
+        if (s.offsetTop <= pos) cur = s.id;
+      });
+      document.querySelectorAll(".navbar-nav a").forEach(function(a) {
+        a.classList.toggle("active", a.getAttribute("href") === "#" + cur);
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+  })();
+  </script>
+
+</body>
+</html>
